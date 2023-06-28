@@ -1,0 +1,11 @@
+package task.tracker.controller.model;
+
+import task.tracker.entity.Category;
+
+public class LifeGoalCategory {
+
+	public LifeGoalCategory(Category category) {
+		// TODO Auto-generated constructor stub
+	}
+
+}

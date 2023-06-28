@@ -1,0 +1,7 @@
+package task.tracker.dao;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface TaskStepDao extends JpaRepository<T, ID> {
+
+}

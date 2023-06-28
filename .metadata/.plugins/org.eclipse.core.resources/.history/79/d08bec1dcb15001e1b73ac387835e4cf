@@ -1,0 +1,11 @@
+package task.tracker.service;
+
+import task.tracker.controller.model.LifeGoalData;
+
+public class TaskTrackerService {
+
+	public LifeGoalData saveLifeGoal(LifeGoalData lifeGoalData) {
+		
+	}
+
+}

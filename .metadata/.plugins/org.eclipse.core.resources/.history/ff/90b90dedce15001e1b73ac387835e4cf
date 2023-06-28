@@ -1,0 +1,33 @@
+package task.tracker.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import jakarta.transaction.Transactional;
+import task.tracker.controller.model.LifeGoalData;
+import task.tracker.dao.LifeGoalDao;
+import task.tracker.entity.LifeGoal;
+
+public class TaskTrackerService {
+	
+	@Autowired
+	private LifeGoalDao lifeGoalDao;
+
+	@Transactional(readOnly = false)
+	public LifeGoalData saveLifeGoal(LifeGoalData lifeGoalData) {
+		Long lifeGoalId = lifeGoalData.getLifeGoalId();
+		LifeGoal lifeGoal = findOrCreateLifeGoal(lifeGoalId);
+		copyLifeGoalFields(lifeGoal, lifeGoalData);
+		return new LifeGoalData(lifeGoalDao.save(lifeGoal));
+	}
+
+	private void copyLifeGoalFields(LifeGoal lifeGoal, LifeGoalData lifeGoalData) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private LifeGoal findOrCreateLifeGoal(Long lifeGoalId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

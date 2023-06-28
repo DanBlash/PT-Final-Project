@@ -1,0 +1,24 @@
+package task.tracker.controller.model;
+
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import task.tracker.entity.TaskStep;
+
+@Data
+@NoArgsConstructor
+
+public class DailyTaskStep {
+
+	private Long dailyTaskId;
+	
+	private String taskName;
+	
+	private String taskEstimatedTime;
+	
+	private String notes;
+	
+	public DailyTaskStep(TaskStep taskStep) {
+		// TODO Auto-generated constructor stub
+	}
+
+}

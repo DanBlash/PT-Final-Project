@@ -1,0 +1,11 @@
+package task.tracker.controller.model;
+
+import task.tracker.entity.TaskStep;
+
+public class DailyTaskStep {
+
+	public DailyTaskStep(TaskStep taskStep) {
+		// TODO Auto-generated constructor stub
+	}
+
+}

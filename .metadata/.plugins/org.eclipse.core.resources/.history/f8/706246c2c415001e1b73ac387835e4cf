@@ -1,0 +1,13 @@
+package task.tracker.controller.model;
+
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+
+	@Data
+	@NoArgsConstructor
+	
+public class TaskTrackerData {
+
+	private Long 
+}

@@ -1,0 +1,7 @@
+package task.tracker.dao;
+
+
+
+public interface LifeGoalDao extends JpaRepository<LifeGoal, Long> {
+
+}
