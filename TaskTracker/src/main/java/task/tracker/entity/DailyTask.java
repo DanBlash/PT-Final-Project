@@ -9,8 +9,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -33,13 +33,13 @@ public class DailyTask {
 	
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "life_goal_id")
+	@ManyToOne(cascade = CascadeType.PERSIST, optional = true)
+	@JoinColumn(name = "life_goal_id", nullable = true)
 	private LifeGoal lifeGoal;
 	
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
-	@ManyToMany(mappedBy = "dailyTasks", cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy = "dailyTask", cascade = CascadeType.PERSIST)
 	private Set<TaskStep> taskSteps = new HashSet<>();
 	
 }

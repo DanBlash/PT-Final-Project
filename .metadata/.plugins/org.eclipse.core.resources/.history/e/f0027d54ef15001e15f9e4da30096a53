@@ -1,0 +1,43 @@
+package task.tracker.controller.model;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import task.tracker.entity.DailyTask;
+import task.tracker.entity.TaskStep;
+
+
+@Data
+@NoArgsConstructor
+
+public class LifeGoalDailyTask {
+
+	
+	private Long dailyTaskId;
+	
+	private String taskName;
+	
+	private String taskEstimatedTime;
+	
+	private String notes;
+	
+	private Set<DailyTaskStep> taskSteps = new HashSet<>();
+		
+	
+	public LifeGoalDailyTask(DailyTask dailyTask) {
+		dailyTaskId = dailyTask.getDailyTaskId();
+		
+		taskName = dailyTask.getTaskName();
+		
+		taskEstimatedTime = dailyTask.getTaskEstimatedTime();
+		
+		notes = dailyTask.getNotes();
+		
+//		for (TaskStep taskStep : dailyTask.getTaskSteps()) {
+//			taskSteps.add(new DailyTaskStep(taskStep));
+//		}
+	}
+
+}

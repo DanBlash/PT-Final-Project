@@ -1,0 +1,15 @@
+spring:
+ datasource:
+  username: tasktracker
+  password: tasktracker
+  url: jdbc:mysql://localhost:3306/tasktracker
+    
+ jpa:
+  hibernate:
+   ddl-auto: update
+  show-sql: true
+  defer-datasource-initialization: true
+  
+ sql:
+  init:
+   mode: on

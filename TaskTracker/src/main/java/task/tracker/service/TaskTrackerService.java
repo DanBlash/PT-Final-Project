@@ -4,11 +4,14 @@ import java.util.NoSuchElementException;
 import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import task.tracker.controller.model.LifeGoalData;
 import task.tracker.dao.LifeGoalDao;
 import task.tracker.entity.LifeGoal;
+
+@Service
 
 public class TaskTrackerService {
 

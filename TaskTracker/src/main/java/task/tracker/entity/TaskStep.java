@@ -1,14 +1,12 @@
 package task.tracker.entity;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -28,6 +26,9 @@ public class TaskStep {
 	
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
-	@ManyToMany(mappedBy = "taskStep", cascade = CascadeType.PERSIST)
-	private Set<DailyTask> dailyTasks = new HashSet<>();
+	@ManyToOne(cascade = CascadeType.PERSIST)
+	@JoinColumn(name = "daily_task_id")
+	private DailyTask dailyTask;
+	
+
 }
