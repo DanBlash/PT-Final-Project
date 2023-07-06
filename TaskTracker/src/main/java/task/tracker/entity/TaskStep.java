@@ -16,6 +16,8 @@ import lombok.ToString;
 
 public class TaskStep {
 
+	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long taskStepId;
@@ -29,6 +31,7 @@ public class TaskStep {
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "daily_task_id")
 	private DailyTask dailyTask;
+	
 	
 
 }

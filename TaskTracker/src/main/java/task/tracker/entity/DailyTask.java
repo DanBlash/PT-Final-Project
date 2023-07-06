@@ -31,6 +31,7 @@ public class DailyTask {
 	
 	private String notes;
 	
+	
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
 	@ManyToOne(cascade = CascadeType.PERSIST, optional = true)

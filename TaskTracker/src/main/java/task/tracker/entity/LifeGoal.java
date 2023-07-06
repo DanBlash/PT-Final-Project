@@ -31,7 +31,7 @@ public class LifeGoal {
 
 	private String estimatedTime;
 
-	private Long difficulty;
+	private String difficulty;
 	
 	
 	@EqualsAndHashCode.Exclude

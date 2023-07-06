@@ -1,0 +1,114 @@
+package task.tracker.service;
+
+import java.util.NoSuchElementException;
+import java.util.Objects;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import task.tracker.controller.error.GlobalErrorHandler;
+import task.tracker.controller.model.LifeGoalDailyTask;
+import task.tracker.controller.model.LifeGoalData;
+import task.tracker.dao.DailyTaskDao;
+import task.tracker.dao.LifeGoalDao;
+import task.tracker.entity.DailyTask;
+import task.tracker.entity.LifeGoal;
+
+@Service
+
+public class TaskTrackerService {
+
+	@Autowired
+	private LifeGoalDao lifeGoalDao;
+
+	@Autowired
+	private DailyTaskDao dailyTaskDao;
+
+	@Transactional(readOnly = false)
+	public LifeGoalData saveLifeGoal(LifeGoalData lifeGoalData) {
+		Long lifeGoalId = lifeGoalData.getLifeGoalId();
+		LifeGoal lifeGoal = findOrCreateLifeGoal(lifeGoalId);
+		copyLifeGoalFields(lifeGoal, lifeGoalData);
+		return new LifeGoalData(lifeGoalDao.save(lifeGoal));
+	}
+
+	private void copyLifeGoalFields(LifeGoal lifeGoal, LifeGoalData lifeGoalData) {
+		lifeGoal.setLifeGoalName(lifeGoalData.getLifeGoalName());
+		lifeGoal.setActiveProgress(lifeGoalData.getActiveProgress());
+		lifeGoal.setEstimatedTime(lifeGoalData.getEstimatedTime());
+		lifeGoal.setDifficulty(lifeGoalData.getDifficulty());
+
+	}
+
+	private LifeGoal findOrCreateLifeGoal(Long lifeGoalId) {
+		LifeGoal lifeGoal;
+
+		if (Objects.isNull(lifeGoalId)) {
+			lifeGoal = new LifeGoal();
+		} else {
+			lifeGoal = findLifeGoalById(lifeGoalId);
+		}
+		return lifeGoal;
+	}
+
+	private LifeGoal findLifeGoalById(Long lifeGoalId) {
+		return lifeGoalDao.findById(lifeGoalId)
+				.orElseThrow(() -> new NoSuchElementException("Life Goal with ID = " + lifeGoalId + " was not found."));
+	}
+
+	@Transactional(readOnly = false)
+	public LifeGoalDailyTask saveDailyTask(Long lifeGoalId, LifeGoalDailyTask lifeGoalDailyTask) {
+
+		LifeGoal lifeGoal = findLifeGoalById(lifeGoalId);
+		Long dailyTaskId = lifeGoalDailyTask.getDailyTaskId();
+		DailyTask dailyTask;
+		
+		
+		if (Objects.isNull(dailyTaskId)) {
+			dailyTask = createDailyTask(lifeGoalId, dailyTaskId);
+		} else {
+			dailyTask = findDailyTaskById(lifeGoalId, dailyTaskId);
+			}
+			
+			copyDailyTaskFields(dailyTask, lifeGoalDailyTask);
+			dailyTask.setLifeGoal(lifeGoal);
+			lifeGoal.getDailyTasks();
+
+		return new LifeGoalDailyTask(dailyTaskDao.save(dailyTask));
+	}
+
+	private void copyDailyTaskFields(DailyTask dailyTask, LifeGoalDailyTask lifeGoalDailyTask) {
+		dailyTask.setNotes(lifeGoalDailyTask.getNotes());
+		dailyTask.setTaskEstimatedTime(lifeGoalDailyTask.getTaskEstimatedTime());
+		dailyTask.setTaskName(lifeGoalDailyTask.getTaskName());
+
+	}
+
+	private DailyTask findDailyTask(Long lifeGoalId, Long dailyTaskId) {
+		return findDailyTaskById(lifeGoalId, dailyTaskId);
+	}
+
+	private DailyTask createDailyTask(Long lifeGoalId, Long dailyTaskId) {		
+		return new DailyTask();
+	}
+	
+	private DailyTask findDailyTaskById(Long lifeGoalId, Long dailyTaskId) {
+		DailyTask dailyTask = dailyTaskDao.findById(dailyTaskId).orElseThrow(
+				() -> new NoSuchElementException("Daily Task with ID = " + dailyTaskId + " was not found."));
+		return dailyTask;
+	}
+	
+	
+	@Transactional(readOnly = false)
+	public LifeGoalDailyTask updateDailyTask(Long lifeGoalId, Long dailyTaskId,
+			LifeGoalDailyTask lifeGoalDailyTask) {
+		
+		DailyTask dailyTask = findDailyTask(lifeGoalId, dailyTaskId);
+		
+		copyDailyTaskFields(dailyTask, lifeGoalDailyTask);
+		
+		return new LifeGoalDailyTask(dailyTaskDao.save(dailyTask));
+	} 
+
+}

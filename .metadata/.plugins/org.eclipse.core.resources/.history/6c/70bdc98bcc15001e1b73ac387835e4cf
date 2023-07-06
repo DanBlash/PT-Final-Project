@@ -1,7 +1,0 @@
-package task.tracker.dao;
-
-import org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration;
-
-public interface LifeGoalDao extends JpaRepositoriesAutoConfiguration<LifeGoal, Long> {
-
-}

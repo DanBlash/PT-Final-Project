@@ -22,7 +22,7 @@ public class LifeGoalData {
 	
 	private String estimatedTime;
 	
-	private Long difficulty;
+	private String difficulty;
 	
 	private Set<LifeGoalDailyTask> dailyTasks = new HashSet<>();
 	
