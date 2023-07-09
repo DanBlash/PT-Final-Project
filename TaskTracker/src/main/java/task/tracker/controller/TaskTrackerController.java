@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.extern.slf4j.Slf4j;
 import task.tracker.controller.model.DailyTaskStep;
+import task.tracker.controller.model.LifeGoalCategory;
 import task.tracker.controller.model.LifeGoalDailyTask;
 import task.tracker.controller.model.LifeGoalData;
 import task.tracker.service.TaskTrackerService;
@@ -42,6 +43,12 @@ public class TaskTrackerController {
 		lifeGoalData.setLifeGoalId(lifeGoalId);
 		log.info("Updating Life Goal {}", lifeGoalData);
 		return taskTrackerService.saveLifeGoal(lifeGoalData);
+	}
+	
+	@PostMapping("/{lifeGoalId}/categories")
+	public LifeGoalCategory insertCategory(@PathVariable Long lifeGoalId, @RequestBody LifeGoalCategory lifeGoalCategory) {
+		log.info("Creating Life Goal Category{}", lifeGoalCategory);
+		return taskTrackerService.saveCategory(lifeGoalId, lifeGoalCategory);
 	}
 	
 	@PostMapping("/life_goal/{lifeGoalId}/daily_task")

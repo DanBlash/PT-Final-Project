@@ -17,6 +17,8 @@ import lombok.ToString;
 
 public class Category {
 
+	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long categoryId;
@@ -27,5 +29,6 @@ public class Category {
 	@ToString.Exclude
 	@ManyToMany(mappedBy = "categories")
 	private Set<LifeGoal> lifeGoals = new HashSet<>();
+	
 	
 }

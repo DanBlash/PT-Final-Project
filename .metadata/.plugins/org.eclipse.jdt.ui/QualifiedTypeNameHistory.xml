@@ -18,7 +18,6 @@
     <fullyQualifiedTypeName name="org.springframework.data.jpa.repository.JpaRepository"/>
     <fullyQualifiedTypeName name="jakarta.transaction.Transactional"/>
     <fullyQualifiedTypeName name="java.util.Objects"/>
-    <fullyQualifiedTypeName name="task.tracker.entity.Category"/>
     <fullyQualifiedTypeName name="org.springframework.stereotype.Component"/>
     <fullyQualifiedTypeName name="task.tracker.dao.LifeGoalDao"/>
     <fullyQualifiedTypeName name="task.tracker.controller.model.LifeGoalData"/>
@@ -50,11 +49,14 @@
     <fullyQualifiedTypeName name="java.lang.Exception"/>
     <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.ResponseStatus"/>
     <fullyQualifiedTypeName name="task.tracker.controller.error.GlobalErrorHandler"/>
-    <fullyQualifiedTypeName name="java.util.Set"/>
-    <fullyQualifiedTypeName name="java.util.NoSuchElementException"/>
     <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.GetMapping"/>
     <fullyQualifiedTypeName name="java.util.List"/>
     <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.DeleteMapping"/>
     <fullyQualifiedTypeName name="java.util.Map"/>
     <fullyQualifiedTypeName name="java.util.Collections"/>
+    <fullyQualifiedTypeName name="java.util.Set"/>
+    <fullyQualifiedTypeName name="task.tracker.entity.Category"/>
+    <fullyQualifiedTypeName name="task.tracker.controller.model.LifeGoalCategory"/>
+    <fullyQualifiedTypeName name="task.tracker.dao.CategoryDao"/>
+    <fullyQualifiedTypeName name="java.util.NoSuchElementException"/>
 </qualifiedTypeNameHistroy>

@@ -14,6 +14,7 @@ public class LifeGoalCategory {
 	private String categoryName;
 	
 	public LifeGoalCategory(Category category) {
+		
 		categoryId = category.getCategoryId();
 		
 		categoryName = category.getCategoryName();

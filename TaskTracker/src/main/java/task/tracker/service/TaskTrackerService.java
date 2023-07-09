@@ -12,11 +12,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import task.tracker.controller.model.DailyTaskStep;
+import task.tracker.controller.model.LifeGoalCategory;
 import task.tracker.controller.model.LifeGoalDailyTask;
 import task.tracker.controller.model.LifeGoalData;
+import task.tracker.dao.CategoryDao;
 import task.tracker.dao.DailyTaskDao;
 import task.tracker.dao.LifeGoalDao;
 import task.tracker.dao.TaskStepDao;
+import task.tracker.entity.Category;
 import task.tracker.entity.DailyTask;
 import task.tracker.entity.LifeGoal;
 import task.tracker.entity.TaskStep;
@@ -30,9 +33,12 @@ public class TaskTrackerService {
 
 	@Autowired
 	private DailyTaskDao dailyTaskDao;
-	
+
 	@Autowired
 	private TaskStepDao taskStepDao;
+
+	@Autowired
+	private CategoryDao categoryDao;
 
 	@Transactional(readOnly = false)
 	public LifeGoalData saveLifeGoal(LifeGoalData lifeGoalData) {
@@ -43,11 +49,11 @@ public class TaskTrackerService {
 	}
 
 	private void copyLifeGoalFields(LifeGoal lifeGoal, LifeGoalData lifeGoalData) {
+
 		lifeGoal.setLifeGoalName(lifeGoalData.getLifeGoalName());
 		lifeGoal.setActiveProgress(lifeGoalData.getActiveProgress());
 		lifeGoal.setEstimatedTime(lifeGoalData.getEstimatedTime());
 		lifeGoal.setDifficulty(lifeGoalData.getDifficulty());
-
 	}
 
 	private LifeGoal findOrCreateLifeGoal(Long lifeGoalId) {
@@ -72,50 +78,47 @@ public class TaskTrackerService {
 		LifeGoal lifeGoal = findLifeGoalById(lifeGoalId);
 		Long dailyTaskId = lifeGoalDailyTask.getDailyTaskId();
 		DailyTask dailyTask;
-		
-		
+
 		if (Objects.isNull(dailyTaskId)) {
-			dailyTask = createDailyTask(lifeGoalId, dailyTaskId);
+			dailyTask = createDailyTask();
 		} else {
 			dailyTask = findDailyTaskById(lifeGoalId, dailyTaskId);
-			}
-			
-			copyDailyTaskFields(dailyTask, lifeGoalDailyTask);
-			dailyTask.setLifeGoal(lifeGoal);
-			lifeGoal.getDailyTasks();
+		}
+
+		copyDailyTaskFields(dailyTask, lifeGoalDailyTask);
+		dailyTask.setLifeGoal(lifeGoal);
+		lifeGoal.getDailyTasks();
 
 		return new LifeGoalDailyTask(dailyTaskDao.save(dailyTask));
 	}
 
 	private void copyDailyTaskFields(DailyTask dailyTask, LifeGoalDailyTask lifeGoalDailyTask) {
-		
+
 		dailyTask.setNotes(lifeGoalDailyTask.getNotes());
 		dailyTask.setTaskEstimatedTime(lifeGoalDailyTask.getTaskEstimatedTime());
 		dailyTask.setTaskName(lifeGoalDailyTask.getTaskName());
-		
+
 	}
 
-	private DailyTask createDailyTask(Long lifeGoalId, Long dailyTaskId) {		
+	private DailyTask createDailyTask() {
 		return new DailyTask();
 	}
-	
+
 	private DailyTask findDailyTaskById(Long lifeGoalId, Long dailyTaskId) {
 		DailyTask dailyTask = dailyTaskDao.findById(dailyTaskId).orElseThrow(
 				() -> new NoSuchElementException("Daily Task with ID = " + dailyTaskId + " was not found."));
 		return dailyTask;
 	}
-	
+
 	@Transactional(readOnly = false)
-	public LifeGoalDailyTask updateDailyTask(Long lifeGoalId, Long dailyTaskId,
-			LifeGoalDailyTask lifeGoalDailyTask) {
-				
+	public LifeGoalDailyTask updateDailyTask(Long lifeGoalId, Long dailyTaskId, LifeGoalDailyTask lifeGoalDailyTask) {
+
 		DailyTask dailyTask = findDailyTaskById(lifeGoalId, dailyTaskId);
-		
+
 		copyDailyTaskFields(dailyTask, lifeGoalDailyTask);
-		
+
 		return new LifeGoalDailyTask(dailyTaskDao.save(dailyTask));
 	}
-	
 
 	public DailyTaskStep saveTaskStep(Long lifeGoalId, Long dailyTaskId, DailyTaskStep dailyTaskSteps) {
 
@@ -125,17 +128,17 @@ public class TaskTrackerService {
 		TaskStep taskStep;
 
 		if (Objects.isNull(taskStepId)) {
-			taskStep = createTaskStep(lifeGoalId, dailyTaskId, dailyTaskSteps);
+			taskStep = createTaskStep();
 		} else {
 			taskStep = findTaskStepById(lifeGoalId, dailyTaskId, taskStepId);
 		}
-		
-			copyTaskStepFields(taskStep, dailyTaskSteps);
-			
-			taskStep.setDailyTask(dailyTask);
-			dailyTask.getTaskSteps();
-			lifeGoal.getDailyTasks();
-			
+
+		copyTaskStepFields(taskStep, dailyTaskSteps);
+
+		taskStep.setDailyTask(dailyTask);
+		dailyTask.getTaskSteps();
+		lifeGoal.getDailyTasks();
+
 		return new DailyTaskStep(taskStepDao.save(taskStep));
 	}
 
@@ -143,36 +146,35 @@ public class TaskTrackerService {
 		taskStep.setStepOrder(dailyTaskSteps.getStepOrder());
 		taskStep.setStepText(dailyTaskSteps.getStepText());
 	}
-	
-	private TaskStep createTaskStep(Long lifeGoalId, Long dailyTaskId, DailyTaskStep dailyTaskSteps) {
+
+	private TaskStep createTaskStep() {
 		return new TaskStep();
 	}
-	
+
 	private TaskStep findTaskStepById(Long lifeGoalId, Long dailyTaskId, Long taskStepId) {
-		TaskStep taskStep = taskStepDao.findById(taskStepId).orElseThrow(
-				() -> new NoSuchElementException("Task Step with ID = " + taskStepId + " was not found."));
+		TaskStep taskStep = taskStepDao.findById(taskStepId)
+				.orElseThrow(() -> new NoSuchElementException("Task Step with ID = " + taskStepId + " was not found."));
 		return taskStep;
 	}
-	
+
 	@Transactional
 	public List<LifeGoalData> retrieveAllLifeGoals() {
 		List<LifeGoalData> result = new LinkedList<>();
 		List<LifeGoal> lifeGoals = lifeGoalDao.findAll();
-		
+
 		for (LifeGoal lifeGoal : lifeGoals) {
 			LifeGoalData lfd = new LifeGoalData(lifeGoal);
-		
+
 			result.add(lfd);
 		}
 		return result;
 	}
-	
+
 	@Transactional
 	public LifeGoalData retrieveLifeGoalById(Long lifeGoalId) {
 		LifeGoalData results = new LifeGoalData(findLifeGoalById(lifeGoalId));
 		return results;
 	}
-	
 
 	public Map<String, String> deleteLifeGoalById(Long lifeGoalId) {
 		LifeGoal lifeGoal = findLifeGoalById(lifeGoalId);
@@ -185,16 +187,41 @@ public class TaskTrackerService {
 		dailyTaskDao.delete(dailyTask);
 		return Collections.singletonMap("Message", "Deleted daily task successfully");
 	}
-	
-	
-	
 
-	
+	@Transactional(readOnly = false)
+	public LifeGoalCategory saveCategory(Long lifeGoalId, LifeGoalCategory lifeGoalCategory) {
 
+		LifeGoal lifeGoal = findLifeGoalById(lifeGoalId);
+		Long categoryId = lifeGoalCategory.getCategoryId();
+		Category category;
 
-	
-	
-	
-	
+		if (Objects.isNull(categoryId)) {
+			category = createCategory();
+		} else {
+			category = findCategoryById(lifeGoalId, categoryId);
+		}
+
+		copyCategoryFields(category, lifeGoalCategory);
+
+		category.getLifeGoals().add(lifeGoal);
+		lifeGoal.getCategories().add(category);
+
+		return new LifeGoalCategory(categoryDao.save(category));
+	}
+
+	private void copyCategoryFields(Category category, LifeGoalCategory lifeGoalCategory) {
+		category.setCategoryName(lifeGoalCategory.getCategoryName());
+		
+	}
+
+	private Category findCategoryById(Long lifeGoalId, Long categoryId) {
+		Category category = categoryDao.findById(categoryId)
+				.orElseThrow(() -> new NoSuchElementException("Category with ID = " + categoryId + "was not found."));
+		return category;
+	}
+
+	private Category createCategory() {
+		return new Category();
+	}
 
 }

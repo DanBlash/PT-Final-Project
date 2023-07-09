@@ -36,7 +36,7 @@ public class LifeGoal {
 	
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
-	@ManyToMany(cascade = CascadeType.PERSIST)
+	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "life_goal_category", joinColumns = @JoinColumn(name = "life_goal_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
 	private Set<Category> categories = new HashSet<>();
 
